@@ -84,12 +84,6 @@ module FoodCritic
       end
 
       files.each do |p|
-        #require 'pp'
-        #puts "=============== AST for #{p[:filename]} =================="
-        #puts read_ast(p[:filename]).class
-        #puts IO.read(p[:filename])
-        #pp read_ast(p[:filename])
-        #puts read_ast(p[:filename])
         relevant_tags = if options[:tags].any?
                           options[:tags]
                         else
