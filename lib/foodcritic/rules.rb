@@ -771,3 +771,44 @@ rule 'FC053', 'Metadata uses the unimplemented "recommends" keyword' do
 end
 
 # NOTE: FC054 was yanked and should be considered reserved, do not reuse it
+
+rule 'FC055', 'Library provider does not declare use_inline_resources' do
+  tags %w(correctness)
+  library do |ast, filename|
+    ast.xpath('//const_path_ref/const[@value="LWRPBase"]/..//const[@value="Provider"]/../../..').select do |x|
+      x.xpath('//*[self::vcall or self::var_ref]/ident[@value="use_inline_resources"]').empty?
+    end
+  end
+end
+
+rule 'FC056', 'Library provider declares use_inline_resources and declares #action_thing methods' do
+  tags %w(correctness)
+  library do |ast, filename|
+    ast.xpath('//const_path_ref/const[@value="LWRPBase"]/..//const[@value="Provider"]/../../..').select do |x|
+      x.xpath('//*[self::vcall or self::var_ref]/ident[@value="use_inline_resources"]') &&
+        x.xpath(%Q(//def[ident[contains(@value, 'action_')]]))
+    end
+  end
+end
+
+rule 'FC057', 'LWRP provider does not declare use_inline_resources' do
+  tags %w(correctness)
+  provider do |ast, filename|
+    use_inline_resources = !ast.xpath('//*[self::vcall or self::var_ref]/ident
+      [@value="use_inline_resources"]').empty?
+    unless use_inline_resources
+      [file_match(filename)]
+    end
+  end
+end
+
+rule 'FC058', 'LWRP provider declares use_inline_resources and declares #action_thing methods' do
+  tags %w(correctness)
+  provider do |ast, filename|
+    use_inline_resources = !ast.xpath('//*[self::vcall or self::var_ref]/ident
+      [@value="use_inline_resources"]').empty?
+    if use_inline_resources
+      ast.xpath(%Q(//def[ident[contains(@value, 'action_')]]))
+    end
+  end
+end

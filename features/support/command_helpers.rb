@@ -65,6 +65,10 @@ module FoodCritic
       'FC052' => 'Metadata uses the unimplemented "suggests" keyword',
       'FC053' => 'Metadata uses the unimplemented "recommends" keyword',
       # FC054 was yanked and is considered reserved, do not reuse it
+      'FC055' => 'Library provider does not declare use_inline_resources',
+      'FC056' => 'Library provider declares use_inline_resources and declares #action_thing methods',
+      'FC057' => 'LWRP provider does not declare use_inline_resources',
+      'FC058' => 'LWRP provider declares use_inline_resources and declares #action_thing methods',
       'FCTEST001' => 'Test Rule'
     }
 
